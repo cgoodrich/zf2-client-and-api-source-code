@@ -9,7 +9,7 @@ use Zend\Db\Sql\Expression;
 class UserFeedArticlesTable extends AbstractTableGateway implements AdapterAwareInterface
 {
     protected $table = 'user_feed_articles';
-    
+
     /**
      * Set db adapter
      *
@@ -20,7 +20,7 @@ class UserFeedArticlesTable extends AbstractTableGateway implements AdapterAware
         $this->adapter = $adapter;
         $this->initialize();
     }
-    
+
     /**
      * Method to get rows by feed_id
      *
@@ -31,7 +31,7 @@ class UserFeedArticlesTable extends AbstractTableGateway implements AdapterAware
     {
         return $this->select(array('feed_id' => $feedId));
     }
-    
+
     /**
      * Method to add an item
      *

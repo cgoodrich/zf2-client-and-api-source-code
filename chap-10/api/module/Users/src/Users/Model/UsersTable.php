@@ -11,7 +11,7 @@ use Zend\InputFilter\Factory as InputFactory;
 class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
 {
     protected $table = 'users';
-    
+
     /**
      * Set db adapter
      *
@@ -22,7 +22,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
         $this->adapter = $adapter;
         $this->initialize();
     }
-    
+
     /**
      * Method to get users by username
      *
@@ -32,10 +32,10 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
     public function getByUsername($username)
     {
         $rowset = $this->select(array('username' => $username));
-        
+
         return $rowset->current();
     }
-    
+
     /**
      * Method to get users by id
      *
@@ -45,10 +45,10 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
     public function getById($id)
     {
         $rowset = $this->select(array('id' => $id));
-        
+
         return $rowset->current();
     }
-    
+
     /**
      * Method to create a new user on the DB
      *
@@ -58,10 +58,10 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
     public function create($userData)
     {
         $userData['created_at'] = new Expression('NOW()');
-        
+
         return $this->insert($userData);
     }
-    
+
     /**
      * Update the avatar of a user
      *
@@ -77,7 +77,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
             'id' => $userId)
         );
     }
-    
+
     /**
      * Return a configured input filter to be able to validate and
      * filter the data.
@@ -88,7 +88,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
     {
         $inputFilter = new InputFilter();
         $factory = new InputFactory();
-        
+
         $inputFilter->add($factory->createInput(array(
             'name'     => 'username',
             'required' => true,
@@ -117,7 +117,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
                 )
             ),
         )));
-        
+
         $inputFilter->add($factory->createInput(array(
             'name'     => 'email',
             'required' => true,
@@ -149,7 +149,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
                 )
             ),
         )));
-        
+
         $inputFilter->add($factory->createInput(array(
             'name'     => 'password',
             'required' => true,
@@ -163,7 +163,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
                 ),
             ),
         )));
-        
+
         $inputFilter->add($factory->createInput(array(
             'name'     => 'name',
             'required' => true,
@@ -184,7 +184,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
                 ),
             ),
         )));
-        
+
         $inputFilter->add($factory->createInput(array(
             'name'     => 'surname',
             'required' => true,
@@ -205,7 +205,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
                 ),
             ),
         )));
-        
+
         $inputFilter->add($factory->createInput(array(
             'name'     => 'bio',
             'required' => false,
@@ -214,7 +214,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
                 array('name' => 'StringTrim'),
             ),
         )));
-        
+
         $inputFilter->add($factory->createInput(array(
             'name'     => 'location',
             'required' => false,
@@ -223,7 +223,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
                 array('name' => 'StringTrim'),
             ),
         )));
-        
+
         $inputFilter->add($factory->createInput(array(
             'name'     => 'gender',
             'required' => false,
@@ -241,7 +241,7 @@ class UsersTable extends AbstractTableGateway implements AdapterAwareInterface
                 ),
             ),
         )));
-        
+
         return $inputFilter;
     }
 }

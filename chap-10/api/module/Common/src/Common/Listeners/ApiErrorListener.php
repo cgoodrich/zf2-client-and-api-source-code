@@ -20,18 +20,18 @@ class ApiErrorListener extends AbstractListenerAggregate
     /**
      * Method to register this listener on the render event
      *
-     * @param EventManagerInterface $events 
+     * @param EventManagerInterface $events
      * @return void
      */
     public function attach(EventManagerInterface $events)
     {
         $this->listeners[] = $events->attach(MvcEvent::EVENT_RENDER, __CLASS__ . '::onRender', 1000);
     }
-    
+
     /**
      * Method executed when the render event is triggered
      *
-     * @param MvcEvent $e 
+     * @param MvcEvent $e
      * @return void
      */
     public static function onRender(MvcEvent $e)
@@ -39,18 +39,18 @@ class ApiErrorListener extends AbstractListenerAggregate
         if ($e->getRequest() instanceOf \Zend\Console\Request || $e->getResponse()->isOk()) {
             return;
         }
-        
+
         $httpCode = $e->getResponse()->getStatusCode();
         $sm = $e->getApplication()->getServiceManager();
         $viewModel = $e->getResult();
         $exception = $viewModel->getVariable('exception');
-        
+
         $model = new JsonModel(array(
             'errorCode' => !empty($exception) ? $exception->getCode() : $httpCode,
             'errorMsg' => !empty($exception) ? $exception->getMessage() : NULL
         ));
         $model->setTerminal(true);
-        
+
         $e->setResult($model);
         $e->setViewModel($model);
         $e->getResponse()->setStatusCode($httpCode);

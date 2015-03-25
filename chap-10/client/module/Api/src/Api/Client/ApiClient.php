@@ -14,14 +14,14 @@ use Zend\Json\Json as Json;
  * @package default
  */
 class ApiClient {
-    
+
     /**
      * Holds the client we will reuse in this class
      *
      * @var Client
      */
     protected static $client = null;
-    
+
     /**
      * Holds the endpoint urls
      *
@@ -33,7 +33,7 @@ class ApiClient {
     protected static $endpointSpecificFeed = '/api/feeds/%s/%d';
     protected static $endpointUsers = '/api/users';
     protected static $endpointGetUser = '/api/users/%s';
-    
+
     /**
      * Perform an API reqquest to retrieve the data of the wall
      * of an specific user on the social network
@@ -46,12 +46,12 @@ class ApiClient {
         $url = self::$endpointHost . sprintf(self::$endpointWall, $username);
         return self::doRequest($url);
     }
-    
+
     /**
      * Perform an API request to post content on the wall of an specific user
      *
-     * @param string $username 
-     * @param array $data 
+     * @param string $username
+     * @param array $data
      * @return Zend\Http\Response
      */
     public static function postWallContent($username, $data)
@@ -59,11 +59,11 @@ class ApiClient {
         $url = self::$endpointHost . sprintf(self::$endpointWall, $username);
         return self::doRequest($url, $data, Request::METHOD_POST);
     }
-    
+
     /**
      * Perform an API request to get the list subscriptions of a username
      *
-     * @param string $username 
+     * @param string $username
      * @return Zend\Http\Response
      */
     public static function getFeeds($username)
@@ -71,11 +71,11 @@ class ApiClient {
         $url = self::$endpointHost . sprintf(self::$endpointFeeds, $username);
         return self::doRequest($url);
     }
-    
+
     /**
      * Perform an API request to add a new subscription
      *
-     * @param string $username 
+     * @param string $username
      * @param array $postData
      * @return Zend\Http\Response
      */
@@ -84,11 +84,11 @@ class ApiClient {
         $url = self::$endpointHost . sprintf(self::$endpointFeeds, $username);
         return self::doRequest($url, $postData, Request::METHOD_POST);
     }
-    
+
     /**
      * Perform an API request to remove a subscription
      *
-     * @param string $username 
+     * @param string $username
      * @param array $postData
      * @return Zend\Http\Response
      */
@@ -97,7 +97,7 @@ class ApiClient {
         $url = self::$endpointHost . sprintf(self::$endpointSpecificFeed, $username, $feedId);
         return self::doRequest($url, null, Request::METHOD_DELETE);
     }
-    
+
     /**
      * Perform an API request to add a new user
      *
@@ -109,7 +109,7 @@ class ApiClient {
         $url = self::$endpointHost . self::$endpointUsers;
         return self::doRequest($url, $postData, Request::METHOD_POST);
     }
-    
+
     /**
      * Perform an API request to get the basic data of a user
      *
@@ -121,9 +121,9 @@ class ApiClient {
         $url = self::$endpointHost . sprintf(self::$endpointGetUser, $username);
         return self::doRequest($url, null, Request::METHOD_GET);
     }
-    
+
     /**
-     * Create a new instance of the Client if we don't have it or 
+     * Create a new instance of the Client if we don't have it or
      * return the one we already have to reuse
      *
      * @return Client
@@ -134,10 +134,10 @@ class ApiClient {
             self::$client = new Client();
             self::$client->setEncType(Client::ENC_URLENCODED);
         }
-        
+
         return self::$client;
     }
-    
+
     /**
      * Perform a request to the API
      *
@@ -150,15 +150,19 @@ class ApiClient {
     protected static function doRequest($url, array $postData = null, $method = Request::METHOD_GET)
     {
         $client = self::getClientInstance();
+        $client->setOptions(array(
+            'timeout' => 30,
+        )
+        );
         $client->setUri($url);
         $client->setMethod($method);
-        
+
         if ($postData !== null) {
             $client->setParameterPost($postData);
         }
-        
+
         $response = $client->send();
-        
+
         if ($response->isSuccess()) {
             return JsonDecoder::decode($response->getBody(), Json::TYPE_ARRAY);
         } else {

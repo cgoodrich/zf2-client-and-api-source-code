@@ -1,1 +1,31 @@
 2013-08-31T13:22:07+01:00 DEBUG (7): {"id":"1","username":"tbhot3ww","email":"info@christophervalles.com","password":null,"avatar_id":"1","name":"Christopher","surname":"Valles","bio":"Game backend engineer. Entrepreneur. Airsofter. Apple fanboy. ACTC. Cooker. Sysadmin. ACSP. If you want to know more just ask!","location":"London, United Kingdom","gender":"1","created_at":null,"updated_at":null,"feed":[{"id":"1","user_id":"1","url":"http:\/\/www.google.es","title":"Google","created_at":"2013-04-27 20:53:44","updated_at":null,"comments":[{"id":"1","user":{"id":"1","username":"tbhot3ww","email":"info@christophervalles.com","password":null,"avatar_id":"1","name":"Christopher","surname":"Valles","bio":"Game backend engineer. Entrepreneur. Airsofter. Apple fanboy. ACTC. Cooker. Sysadmin. ACSP. If you want to know more just ask!","location":"London, United Kingdom","gender":"1","created_at":null,"updated_at":null},"comment":"Comment 1"}]},{"id":"1","user_id":"1","filename":"727f0c18ca77f17bc07bd717bafee686d3f361ad.png","created_at":"2013-04-27 20:53:15","updated_at":null},{"id":"1","user_id":"1","status":"Test","created_at":"2013-04-27 20:52:59","updated_at":null}]}
+2015-03-24T23:11:01-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-24T23:11:41-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-24T23:12:46-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-24T23:12:47-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-24T23:12:55-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-24T23:12:55-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-24T23:13:21-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-24T23:22:40-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-25T13:11:28-04:00 DEBUG (7): {"errorCode":0,"errorMsg":"Error parsing document (type == docXml)"}
+2015-03-25T13:12:27-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-25T13:13:20-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-25T13:13:26-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-25T13:14:41-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-25T13:15:02-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-25T13:15:45-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-25T13:21:23-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-25T13:21:43-04:00 DEBUG (7): {"errorCode":2002,"errorMsg":"Connect Error: SQLSTATE[HY000] [2002] No connection could be made because the target machine actively refused it.\r\n"}
+2015-03-25T13:24:28-04:00 DEBUG (7): {"errorCode":0,"errorMsg":"Error parsing document (type == docXml)"}
+2015-03-25T13:25:27-04:00 DEBUG (7): {"errorCode":0,"errorMsg":"Error parsing document (type == docXml)"}
+2015-03-25T13:27:30-04:00 DEBUG (7): {"errorCode":0,"errorMsg":"Error parsing document (type == docXml)"}
+2015-03-25T13:33:38-04:00 DEBUG (7): {"errorCode":0,"errorMsg":"Error parsing document (type == docXml)"}
+2015-03-25T13:34:36-04:00 DEBUG (7): {"errorCode":0,"errorMsg":"Error parsing document (type == docXml)"}
+2015-03-25T13:34:43-04:00 DEBUG (7): {"errorCode":0,"errorMsg":"Error parsing document (type == docXml)"}
+2015-03-25T13:34:48-04:00 DEBUG (7): {"errorCode":0,"errorMsg":"Error parsing document (type == docXml)"}
+2015-03-25T13:35:04-04:00 DEBUG (7): {"errorCode":0,"errorMsg":"Error parsing document (type == docXml)"}
+2015-03-25T13:38:53-04:00 DEBUG (7): {"errorCode":0,"errorMsg":"A valid response status line was not found in the provided string"}
+2015-03-25T13:39:03-04:00 DEBUG (7): {"errorCode":0,"errorMsg":"Error parsing document (type == docXml)"}
+2015-03-25T13:40:02-04:00 DEBUG (7): {"errorCode":0,"errorMsg":"Error parsing document (type == docXml)"}
+2015-03-25T13:40:23-04:00 DEBUG (7): {"errorCode":0,"errorMsg":"A valid response status line was not found in the provided string"}
+2015-03-25T13:40:57-04:00 DEBUG (7): {"errorCode":0,"errorMsg":"A valid response status line was not found in the provided string"}

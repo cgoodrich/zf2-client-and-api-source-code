@@ -28,21 +28,21 @@ class IndexController extends AbstractRestfulController
      * @var UserFeedsTable
      */
     protected $userFeedsTable;
-    
+
     /**
      * Hold the table instance
      *
      * @var UserFeedArticlesTable
      */
     protected $userFeedArticlesTable;
-    
+
     /**
      * Hold the table instance
      *
      * @var UsersTable
      */
     protected $usersTable;
-    
+
     /**
      * Method not available for this endpoint
      *
@@ -52,7 +52,7 @@ class IndexController extends AbstractRestfulController
     {
         $this->methodNotAllowed();
     }
-    
+
     /**
      * Return a list of feed subscription for a specific user
      *
@@ -65,17 +65,17 @@ class IndexController extends AbstractRestfulController
         $user = $usersTable->getByUsername($username);
         $userFeedsTable = $this->getTable('UserFeedsTable');
         $userFeedArticlesTable = $this->getTable('UserFeedArticlesTable');
-        
+
         $feedsFromDb = $userFeedsTable->getByUserId($user->id)->toArray();
         $feeds = array();
         foreach ($feedsFromDb as $f) {
             $feeds[$f['id']] = $f;
             $feeds[$f['id']]['articles'] = $userFeedArticlesTable->getByFeedId($f['id'])->toArray();
         }
-        
+
         return new JsonModel($feeds);
     }
-    
+
     /**
      * Add a new subscription
      *
@@ -86,28 +86,28 @@ class IndexController extends AbstractRestfulController
         $username = $this->params()->fromRoute('username');
         $usersTable = $this->getTable('UsersTable');
         $user = $usersTable->getByUsername($username);
-        
+
         $userFeedsTable = $this->getTable('UserFeedsTable');
         $rssLinkXpath = '//link[@type="application/rss+xml"]';
         $faviconXpath = '//link[@rel="shortcut icon"]';
-        
+
         $client = new Client($data['url']);
         $client->setEncType(Client::ENC_URLENCODED);
         $client->setMethod(\Zend\Http\Request::METHOD_GET);
         $response = $client->send();
-        
+
         if ($response->isSuccess()) {
             $html = $response->getBody();
-            $html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8"); 
-            
+            $html = mb_convert_encoding($html, 'HTML-ENTITIES', "UTF-8");
+
             $dom = new Query($html);
             $rssUrl = $dom->execute($rssLinkXpath);
-            
+
             if (!count($rssUrl)) {
                 throw new Exception('Rss url not found in the url provided', 404);
             }
             $rssUrl = $rssUrl->current()->getAttribute('href');
-            
+
             $faviconUrl = $dom->execute($faviconXpath);
             if (count($faviconUrl)) {
                 $faviconUrl = $faviconUrl->current()->getAttribute('href');
@@ -117,14 +117,14 @@ class IndexController extends AbstractRestfulController
         } else {
             throw new Exception("Website not found", 404);
         }
-        
+
         $rss = Reader::import($rssUrl);
-        
+
         return new JsonModel(array(
             'result' => $userFeedsTable->create($user->id, $rssUrl, $rss->getTitle(), $faviconUrl)
         ));
     }
-    
+
     /**
      * Method not available for this endpoint
      *
@@ -134,7 +134,7 @@ class IndexController extends AbstractRestfulController
     {
         $this->methodNotAllowed();
     }
-    
+
     /**
      * Delete a subscription
      *
@@ -145,43 +145,43 @@ class IndexController extends AbstractRestfulController
         $username = $this->params()->fromRoute('username');
         $usersTable = $this->getTable('UsersTable');
         $user = $usersTable->getByUsername($username);
-        
+
         $userFeedsTable = $this->getTable('UserFeedsTable');
         $userFeedArticlesTable = $this->getTable('UserFeedArticlesTable');
-        
+
         $userFeedArticlesTable->delete(array('feed_id' => $id));
         return new JsonModel(array(
             'result' => $userFeedsTable->delete(array('id' => $id, 'user_id' => $user->id))
         ));
     }
-    
+
     protected function methodNotAllowed()
     {
         $this->response->setStatusCode(\Zend\Http\PhpEnvironment\Response::STATUS_CODE_405);
     }
-    
+
     protected function getTable($table)
     {
         $sm = $this->getServiceLocator();
-        
+
         switch ($table) {
             case 'UserFeedsTable':
                 if (!$this->userFeedsTable) {
                     $this->userFeedsTable = $sm->get('Feeds\Model\UserFeedsTable');
                 }
-                
+
                 return $this->userFeedsTable;
             case 'UserFeedArticlesTable':
                 if (!$this->userFeedArticlesTable) {
                     $this->userFeedArticlesTable = $sm->get('Feeds\Model\UserFeedArticlesTable');
                 }
-                
+
                 return $this->userFeedArticlesTable;
             case 'UsersTable':
                 if (!$this->usersTable) {
                     $this->usersTable = $sm->get('Users\Model\UsersTable');
                 }
-                
+
                 return $this->usersTable;
         }
     }

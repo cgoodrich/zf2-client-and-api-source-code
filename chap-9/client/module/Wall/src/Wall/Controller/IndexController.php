@@ -29,39 +29,39 @@ class IndexController extends AbstractActionController
     {
         $viewData = array();
         $flashMessenger = $this->flashMessenger();
-        
+
         $username = $this->params()->fromRoute('username');
         $this->layout()->username = $username;
-        
+
         $response = ApiClient::getWall($username);
-        
+
         if ($response !== FALSE) {
             $hydrator = new ClassMethods();
-            
+
             $user = $hydrator->hydrate($response, new User());
         } else {
             $this->getResponse()->setStatusCode(404);
             return;
         }
-        
+
         $paginator = new Paginator(new ArrayAdapter($user->getFeed()));
         $paginator->setItemCountPerPage(5);
         $paginator->setCurrentPageNumber($this->params()->fromRoute('page'));
-        
+
         //Check if we are submitting content
         $request = $this->getRequest();
         $statusForm = new TextStatusForm;
         $imageForm = new ImageForm();
         $linkForm = new LinkForm();
         $commentForm = new CommentForm();
-        
+
         if ($request->isPost()) {
             $data = $request->getPost()->toArray();
-            
+
             if (array_key_exists('status', $data)) {
                 $result = $this->createStatus($statusForm, $user, $data);
             }
-            
+
             if (!empty($request->getFiles()->image)) {
                 $data = array_merge_recursive(
                     $data,
@@ -69,15 +69,15 @@ class IndexController extends AbstractActionController
                 );
                 $result = $this->createImage($imageForm, $user, $data);
             }
-            
+
             if (array_key_exists('url', $data)) {
                 $result = $this->createLink($linkForm, $user, $data);
             }
-            
+
             if (array_key_exists('comment', $data)) {
                 $result = $this->createComment($commentForm, $user, $data);
             }
-            
+
             switch (true) {
                 case $result instanceOf TextStatusForm:
                     $statusForm = $result;
@@ -101,7 +101,7 @@ class IndexController extends AbstractActionController
                     break;
             }
         }
-        
+
         $statusForm->setAttribute('action', $this->url()->fromRoute('wall', array('username' => $user->getUsername())));
         $imageForm->setAttribute('action', $this->url()->fromRoute('wall', array('username' => $user->getUsername())));
         $linkForm->setAttribute('action', $this->url()->fromRoute('wall', array('username' => $user->getUsername())));
@@ -112,19 +112,19 @@ class IndexController extends AbstractActionController
         $viewData['linkContentForm'] = $linkForm;
         $viewData['commentContentForm'] = $commentForm;
         $viewData['paginator'] = $paginator;
-        
+
         if ($flashMessenger->hasMessages()) {
             $viewData['flashMessages'] = $flashMessenger->getMessages();
         }
-        
+
         return $viewData;
     }
-    
+
     /**
      * Upload a new image
      *
-     * @param Zend\Form\Form $form 
-     * @param Users\Entity\User $user 
+     * @param Zend\Form\Form $form
+     * @param Users\Entity\User $user
      * @param array $data
      */
     protected function createImage($form, $user, $data)
@@ -132,16 +132,16 @@ class IndexController extends AbstractActionController
         if ($data['image']['error'] != 0) {
             $data['image'] = NULL;
         }
-        
+
         $form->setData($data);
-        
+
         $size = new Size(array('max' => 2048000));
         $isImage = new IsImage();
         $filename = $data['image']['name'];
-        
+
         $adapter = new \Zend\File\Transfer\Adapter\Http();
         $adapter->setValidators(array($size, $isImage), $filename);
-        
+
         if (!$adapter->isValid($filename)){
             $errors = array();
             foreach($adapter->getMessages() as $key => $row) {
@@ -149,23 +149,23 @@ class IndexController extends AbstractActionController
             }
             $form->setMessages(array('image' => $errors));
         }
-        
+
         if ($form->isValid()) {
             $destPath = 'data/tmp/';
             $adapter->setDestination($destPath);
-            
+
             $fileinfo = $adapter->getFileInfo();
             preg_match('/.+\/(.+)/', $fileinfo['image']['type'], $matches);
             $extension = $matches[1];
             $newFilename = sprintf('%s.%s', sha1(uniqid(time(), true)), $extension);
-            
+
             $adapter->addFilter('File\Rename',
                 array(
                     'target' => $destPath . $newFilename,
                     'overwrite' => true,
                 )
             );
-            
+
             if ($adapter->receive($filename)) {
                 $data = array();
                 $data['image'] = base64_encode(
@@ -174,24 +174,24 @@ class IndexController extends AbstractActionController
                     )
                 );
                 $data['user_id'] = $user->getId();
-                
+
                 if (file_exists($destPath . $newFilename)) {
                     unlink($destPath . $newFilename);
                 }
-                
+
                 $response = ApiClient::postWallContent($user->getUsername(), $data);
                 return $response['result'];
             }
         }
-        
+
         return $form;
     }
-    
+
     /**
      * Create a new status
      *
-     * @param Zend\Form\Form $form 
-     * @param Users\Entity\User $user 
+     * @param Zend\Form\Form $form
+     * @param Users\Entity\User $user
      * @param array $data
      * @return mixed
      */
@@ -200,12 +200,12 @@ class IndexController extends AbstractActionController
         $form->setInputFilter(Status::getInputFilter());
         return $this->processSimpleForm($form, $user, $data);
     }
-    
+
     /**
      * Store a new link
      *
-     * @param Zend\Form\Form $form 
-     * @param Users\Entity\User $user 
+     * @param Zend\Form\Form $form
+     * @param Users\Entity\User $user
      * @param array $data
      * @return mixed
      */
@@ -213,12 +213,12 @@ class IndexController extends AbstractActionController
     {
         return $this->processSimpleForm($form, $user, $data);
     }
-    
+
     /**
      * Store a new comment
      *
-     * @param Zend\Form\Form $form 
-     * @param Users\Entity\User $user 
+     * @param Zend\Form\Form $form
+     * @param Users\Entity\User $user
      * @param array $data
      * @return mixed
      */
@@ -226,30 +226,30 @@ class IndexController extends AbstractActionController
     {
         return $this->processSimpleForm($form, $user, $data);
     }
-    
+
     /**
      * Method to process a simple form
      * User by createStatus() and createLink()
      *
-     * @param Zend\Form\Form $form 
-     * @param string $user 
-     * @param array $data 
+     * @param Zend\Form\Form $form
+     * @param string $user
+     * @param array $data
      * @return mixed
      */
     protected function processSimpleForm($form, $user, array $data)
     {
         $form->setData($data);
-        
+
         if ($form->isValid()) {
             $data = $form->getData();
             $data['user_id'] = $user->getId();
             unset($data['submit']);
             unset($data['csrf']);
-            
+
             $response = ApiClient::postWallContent($user->getUsername(), $data);
             return $response['result'];
         }
-        
+
         return $form;
     }
 }

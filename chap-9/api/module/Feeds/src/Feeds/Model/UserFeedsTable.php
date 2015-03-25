@@ -9,7 +9,7 @@ use Zend\Db\Sql\Expression;
 class UserFeedsTable extends AbstractTableGateway implements AdapterAwareInterface
 {
     protected $table = 'user_feeds';
-    
+
     /**
      * Set db adapter
      *
@@ -20,7 +20,7 @@ class UserFeedsTable extends AbstractTableGateway implements AdapterAwareInterfa
         $this->adapter = $adapter;
         $this->initialize();
     }
-    
+
     /**
      * Method to get rows by user_id
      *
@@ -31,7 +31,7 @@ class UserFeedsTable extends AbstractTableGateway implements AdapterAwareInterfa
     {
         return $this->select(array('user_id' => $userId));
     }
-    
+
     /**
      * Method to add a subscription to a rss feed
      *
@@ -51,11 +51,11 @@ class UserFeedsTable extends AbstractTableGateway implements AdapterAwareInterfa
             'updated_at' => null
         ));
     }
-    
+
     /**
      * Update the feed updated_at field to reflect when we get the entries
      *
-     * @param int $feedId 
+     * @param int $feedId
      * @return int
      */
     public function updateTimestamp($feedId)
